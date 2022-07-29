@@ -1,27 +1,18 @@
 package com.xm.recommendation.validator;
 
-import com.xm.recommendation.enums.CryptoCurrency;
-import com.xm.recommendation.exception.FileProcessingException;
-import org.springframework.beans.factory.annotation.Value;
+import com.xm.recommendation.exception.CurrencyNotSupportedException;
+import com.xm.recommendation.service.CryptoService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.stream.Stream;
-
+@RequiredArgsConstructor
 @Component
 public class CsvFileValidator {
+    private final CryptoService cryptoService;
 
-    @Value("${csv.file.name.format}")
-    private String fileNameFormat;
-
-    public void validateFileName(String fileName) {
-        boolean isFileForSupportedCurrency = Stream.of(CryptoCurrency.values())
-                .map(CryptoCurrency::toString)
-                .map(supportedCryptoCurrency -> String.format(fileNameFormat, supportedCryptoCurrency))
-                .anyMatch(expectedFileName -> expectedFileName.equals(fileName));
-
-        if (!isFileForSupportedCurrency) {
-            throw new FileProcessingException(String.format("file name [%s] is not supported", fileName));
-        }
+    public void validateCurrencyCode(String currencyCode) {
+        cryptoService.getCryptoCurrencyByCurrencyCode(currencyCode)
+                .orElseThrow(() -> new CurrencyNotSupportedException(String.format("currency [%s] is not supported", currencyCode)));
     }
 
 }

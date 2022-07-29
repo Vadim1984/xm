@@ -1,15 +1,21 @@
 package com.xm.recommendation.model;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Data
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "ip_address")
 public class IpAddressModel {
     @Id
