@@ -1,6 +1,6 @@
 package com.xm.recommendation.listener;
 
-import com.xm.recommendation.model.CryptoRecordModel;
+import com.xm.recommendation.model.CryptoRateModel;
 import com.xm.recommendation.repository.CryptoRepository;
 import com.xm.recommendation.service.CryptoRatesReaderService;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +21,9 @@ public class ApplicationReadyListener implements ApplicationListener<Application
 
     @Override
     public void onApplicationEvent(final ApplicationReadyEvent event) {
-        List<CryptoRecordModel> cryptoRecords = cryptoRatesReaderService.read();
+        List<CryptoRateModel> cryptoRecords = cryptoRatesReaderService.read();
         log.debug("Read from csv files {} records", cryptoRecords.size());
-        Iterable<CryptoRecordModel> savedCryptoRecord = cryptoRepository.saveAll(cryptoRecords);
+        Iterable<CryptoRateModel> savedCryptoRecord = cryptoRepository.saveAll(cryptoRecords);
         log.debug("Insert into DB {} records", StreamSupport.stream(savedCryptoRecord.spliterator(), false).count());
     }
 }

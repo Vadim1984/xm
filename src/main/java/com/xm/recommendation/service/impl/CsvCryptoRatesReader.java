@@ -3,7 +3,7 @@ package com.xm.recommendation.service.impl;
 import com.xm.recommendation.converter.CsvRecordToCryptoRecordModelConverter;
 import com.xm.recommendation.enums.CryptoCurrency;
 import com.xm.recommendation.exception.FileProcessingException;
-import com.xm.recommendation.model.CryptoRecordModel;
+import com.xm.recommendation.model.CryptoRateModel;
 import com.xm.recommendation.service.CryptoRatesReaderService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.csv.CSVFormat;
@@ -30,7 +30,7 @@ public class CsvCryptoRatesReader implements CryptoRatesReaderService {
     private final CsvRecordToCryptoRecordModelConverter converter;
 
     @Override
-    public List<CryptoRecordModel> read() {
+    public List<CryptoRateModel> read() {
         return Stream.of(CryptoCurrency.values())
                 .map(CryptoCurrency::toString)
                 .map(supportedCryptoCurrency -> String.format(fileNameFormat, supportedCryptoCurrency))
@@ -39,7 +39,7 @@ public class CsvCryptoRatesReader implements CryptoRatesReaderService {
     }
 
     @Override
-    public List<CryptoRecordModel> read(String fileName) {
+    public List<CryptoRateModel> read(String fileName) {
         try {
             ClassPathResource resource = new ClassPathResource("crypto_rates/" + fileName);
             Reader in = new BufferedReader(new InputStreamReader(resource.getInputStream()));

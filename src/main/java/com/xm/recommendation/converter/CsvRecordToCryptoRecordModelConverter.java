@@ -2,7 +2,7 @@ package com.xm.recommendation.converter;
 
 import com.xm.recommendation.enums.CryptoCurrency;
 import com.xm.recommendation.exception.FileProcessingException;
-import com.xm.recommendation.model.CryptoRecordModel;
+import com.xm.recommendation.model.CryptoRateModel;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
@@ -11,12 +11,12 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Component
-public class CsvRecordToCryptoRecordModelConverter implements Converter<CSVRecord, CryptoRecordModel> {
+public class CsvRecordToCryptoRecordModelConverter implements Converter<CSVRecord, CryptoRateModel> {
 
     @Override
-    public CryptoRecordModel convert(CSVRecord source) {
+    public CryptoRateModel convert(CSVRecord source) {
         try {
-            CryptoRecordModel.CryptoRecordModelBuilder builder = CryptoRecordModel.builder();
+            CryptoRateModel.CryptoRecordModelBuilder builder = CryptoRateModel.builder();
 
             String timestamp = source.get("timestamp");
             String symbol = source.get("symbol");

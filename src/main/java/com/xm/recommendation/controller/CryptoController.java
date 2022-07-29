@@ -1,6 +1,6 @@
 package com.xm.recommendation.controller;
 
-import com.xm.recommendation.model.CryptoRecordModel;
+import com.xm.recommendation.model.CryptoRateModel;
 import com.xm.recommendation.service.CryptoRatesReaderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,12 +18,12 @@ public class CryptoController {
     private final CryptoRatesReaderService cryptoRatesReaderService;
 
     @GetMapping("/{fileName}")
-    public List<CryptoRecordModel> getCryptos(@PathVariable String fileName){
+    public List<CryptoRateModel> getCryptos(@PathVariable String fileName){
         return cryptoRatesReaderService.read(fileName);
     }
 
     @GetMapping
-    public List<CryptoRecordModel> getAllCryptos(){
+    public List<CryptoRateModel> getAllCryptos(){
         return cryptoRatesReaderService.read();
     }
 }

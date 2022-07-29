@@ -12,10 +12,14 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-/*        http
+      /*
+        we can use OOTB hasIpAddress but we should hardcode ip addresses...
+
+        http
                 .authorizeRequests()
                 .antMatchers("/**")
-                .access("hasIpAddress('192.168.1.0/24') or hasIpAddress('0:0:0:0:0:0:0:1')");*/
+                .access("hasIpAddress('192.168.1.0/24') or hasIpAddress('0:0:0:0:0:0:0:1')");
+       */
 
         http
                 .sessionManagement()
