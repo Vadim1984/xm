@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class CsvFileValidator {
+public class CryptoValidator {
     private final CryptoService cryptoService;
 
     public void validateCurrencyCode(String currencyCode) {

@@ -1,5 +1,6 @@
 package com.xm.recommendation.controller;
 
+import com.xm.recommendation.dto.CryptoCurrencyNormalizedRange;
 import com.xm.recommendation.dto.CryptoCurrencyRateDto;
 import com.xm.recommendation.facade.CryptoFacade;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,12 @@ public class CryptoController {
     private final CryptoFacade cryptoFacade;
 
     @GetMapping
-    public List<CryptoCurrencyRateDto> getAllCryptos(){
+    public List<CryptoCurrencyRateDto> getAllCryptos() {
         return cryptoFacade.getAllCryptoRates();
+    }
+
+    @GetMapping("/normalized-rates")
+    public List<CryptoCurrencyNormalizedRange> getAllCryptosNormalizedRates() {
+        return cryptoFacade.getAllCryptosOrderedByNormalizedRange();
     }
 }

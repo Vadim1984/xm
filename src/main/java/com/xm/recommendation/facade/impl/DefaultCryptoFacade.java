@@ -1,6 +1,7 @@
 package com.xm.recommendation.facade.impl;
 
 import com.xm.recommendation.converter.CryptoCurrencyRateModelToDtoConverter;
+import com.xm.recommendation.dto.CryptoCurrencyNormalizedRange;
 import com.xm.recommendation.dto.CryptoCurrencyRateDto;
 import com.xm.recommendation.facade.CryptoFacade;
 import com.xm.recommendation.service.CryptoService;
@@ -21,6 +22,11 @@ public class DefaultCryptoFacade implements CryptoFacade {
         return StreamSupport.stream(cryptoService.getAllCurrencyRates().spliterator(), false)
                 .map(cryptoCurrencyRateModelToDtoConverter::convert)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CryptoCurrencyNormalizedRange> getAllCryptosOrderedByNormalizedRange() {
+        return cryptoService.getAllCryptosOrderedByNormalizedRange();
     }
 
 }

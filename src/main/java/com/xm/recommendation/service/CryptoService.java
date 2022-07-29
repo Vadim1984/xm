@@ -1,5 +1,6 @@
 package com.xm.recommendation.service;
 
+import com.xm.recommendation.dto.CryptoCurrencyNormalizedRange;
 import com.xm.recommendation.model.CryptoCurrencyModel;
 import com.xm.recommendation.model.CryptoRateModel;
 
@@ -7,20 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CryptoService {
-
-    /**
-     * Read crypto-rates from file
-     *
-     * @param fileName file to read
-     * @return list of {@link CryptoRateModel CryptoRecordModel}
-     */
-    List<CryptoRateModel> read(String fileName);
-
-
-    /**
-     * import all crypto-rates into DB for all supported currencies
-     */
-    void importRatesIntoDb();
 
     /**
      * Get all crypto-rates
@@ -36,4 +23,6 @@ public interface CryptoService {
      * @return Optional of {@link CryptoCurrencyModel CryptoCurrencyModel}
      */
     Optional<CryptoCurrencyModel> getCryptoCurrencyByCurrencyCode(String currencyCode);
+
+    List<CryptoCurrencyNormalizedRange> getAllCryptosOrderedByNormalizedRange();
 }
