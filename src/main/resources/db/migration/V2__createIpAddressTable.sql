@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS `ip_address` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `ip_address` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=UTF8

@@ -13,7 +13,7 @@ public class CsvFileValidator {
     @Value("${csv.file.name.format}")
     private String fileNameFormat;
 
-    void validateFileName(String fileName) {
+    public void validateFileName(String fileName) {
         boolean isFileForSupportedCurrency = Stream.of(CryptoCurrency.values())
                 .map(CryptoCurrency::toString)
                 .map(supportedCryptoCurrency -> String.format(fileNameFormat, supportedCryptoCurrency))
@@ -23,6 +23,5 @@ public class CsvFileValidator {
             throw new FileProcessingException(String.format("file name [%s] is not supported", fileName));
         }
     }
-
 
 }

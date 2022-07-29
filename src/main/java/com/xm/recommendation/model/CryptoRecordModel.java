@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 
 @Data
 @Builder
-@Entity
+@Entity(name = "crypto_record")
 public class CryptoRecordModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

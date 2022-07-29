@@ -1,0 +1,1 @@
+INSERT INTO RECOMMENDATION.ip_address (ip_address) VALUES ('0:0:0:0:0:0:0:1');
