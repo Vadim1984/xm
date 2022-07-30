@@ -12,7 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -24,7 +24,7 @@ public class CryptoRateModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Timestamp timeStamp;
+    private LocalDateTime timeStamp;
     @ManyToOne
     private CryptoCurrencyModel cryptoCurrency;
     private BigDecimal price;

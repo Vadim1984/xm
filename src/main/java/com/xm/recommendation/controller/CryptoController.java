@@ -2,6 +2,7 @@ package com.xm.recommendation.controller;
 
 import com.xm.recommendation.dto.CryptoNormalizedRangeDto;
 import com.xm.recommendation.dto.CryptoRateDto;
+import com.xm.recommendation.dto.CryptoStatisticsDto;
 import com.xm.recommendation.facade.CryptoFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +25,13 @@ public class CryptoController {
     }
 
     @GetMapping("/normalized-rates")
-    public List<CryptoNormalizedRangeDto> getAllCryptosNormalizedRates(@RequestParam(value = "period", defaultValue = "12") int monthsPeriod) {
+    public List<CryptoNormalizedRangeDto> getAllCryptosNormalizedRates(@RequestParam(value = "period", defaultValue = "12") long monthsPeriod) {
         return cryptoFacade.getAllCryptosOrderedByNormalizedRange(monthsPeriod);
+    }
+
+    @GetMapping("/statistic")
+    public CryptoStatisticsDto getStatisticsForCrypto(@RequestParam(value = "currencyCode") String currencyCode,
+                                                      @RequestParam(value = "period", defaultValue = "12") long monthsPeriod) {
+        return cryptoFacade.getStatisticsForCurrencyCodeAndPeriod(currencyCode, monthsPeriod);
     }
 }

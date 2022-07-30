@@ -24,5 +24,41 @@ public interface CryptoService {
      */
     Optional<CryptoCurrencyModel> getCryptoCurrencyByCurrencyCode(String currencyCode);
 
-    List<CryptoNormalizedRangeDto> getAllCryptosOrderedByNormalizedRange(int monthsPeriod);
+    List<CryptoNormalizedRangeDto> getAllCryptosOrderedByNormalizedRange(long monthsPeriod);
+
+    /**
+     * Return oldest currency rate record
+     *
+     * @param currencyCode currency
+     * @param monthsPeriod time period in months
+     * @return {@link CryptoRateModel oldest record}
+     */
+    CryptoRateModel findOldestRateByCurrencyCodeAndPeriod(String currencyCode, long monthsPeriod);
+
+    /**
+     * Return newest currency rate record
+     *
+     * @param currencyCode currency
+     * @param monthsPeriod time period in months
+     * @return {@link CryptoRateModel newest record}
+     */
+    CryptoRateModel findNewestRateByCurrencyCodeAndPeriod(String currencyCode, long monthsPeriod);
+
+    /**
+     * Return currency rate record with min rate
+     *
+     * @param currencyCode currency
+     * @param monthsPeriod time period in months
+     * @return {@link CryptoRateModel record with min rate}
+     */
+    CryptoRateModel findMinRateByCurrencyCodeAndPeriod(String currencyCode, long monthsPeriod);
+
+    /**
+     * Return currency rate record with max rate
+     *
+     * @param currencyCode currency
+     * @param monthsPeriod time period in months
+     * @return {@link CryptoRateModel record with max rate}
+     */
+    CryptoRateModel findMaxRateByCurrencyCodeAndPeriod(String currencyCode, long monthsPeriod);
 }

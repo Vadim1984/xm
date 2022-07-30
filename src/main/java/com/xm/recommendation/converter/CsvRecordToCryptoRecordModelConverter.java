@@ -9,29 +9,34 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.TimeZone;
 
 @RequiredArgsConstructor
 @Component
 public class CsvRecordToCryptoRecordModelConverter implements Converter<CSVRecord, CryptoRateModel> {
+
+    private static final String TIMESTAMP_FILED = "timestamp";
+    private static final String SYMBOL_FIELD = "symbol";
+    private static final String PRICE_FIELD = "price";
 
     private final CryptoCurrencyRepository cryptoCurrencyRepository;
 
     @Override
     public CryptoRateModel convert(CSVRecord source) {
         try {
+            String timestamp = source.get(TIMESTAMP_FILED);
+            String symbol = source.get(SYMBOL_FIELD);
+            String price = source.get(PRICE_FIELD);
+            LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(Long.parseLong(timestamp)),
+                    TimeZone.getDefault().toZoneId());
 
-            CryptoRateModel.CryptoRateModelBuilder builder = CryptoRateModel.builder();
-
-            String timestamp = source.get("timestamp");
-            String symbol = source.get("symbol");
-            String price = source.get("price");
-
-            builder.timeStamp(new Timestamp(Long.parseLong(timestamp)));
-            builder.cryptoCurrency(cryptoCurrencyRepository.findByCurrencyCode(symbol));
-            builder.price(new BigDecimal(price));
-
-            return builder.build();
+            return CryptoRateModel.builder()
+                    .timeStamp(dateTime)
+                    .cryptoCurrency(cryptoCurrencyRepository.findByCurrencyCode(symbol))
+                    .price(new BigDecimal(price))
+                    .build();
         } catch (IllegalArgumentException e) {
             throw new FileProcessingException(e.getMessage());
         }

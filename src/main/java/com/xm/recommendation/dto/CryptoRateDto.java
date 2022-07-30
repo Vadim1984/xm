@@ -4,12 +4,12 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
 public class CryptoRateDto {
-    private Timestamp timeStamp;
+    private LocalDateTime timeStamp;
     private String cryptoCurrency;
     private BigDecimal price;
 }

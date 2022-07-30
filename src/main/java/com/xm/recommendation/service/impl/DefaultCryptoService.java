@@ -2,6 +2,7 @@ package com.xm.recommendation.service.impl;
 
 import com.xm.recommendation.dto.CryptoNormalizedRangeDto;
 import com.xm.recommendation.exception.CalculationNormalizedRangeException;
+import com.xm.recommendation.exception.CryptoRecordNotFoundException;
 import com.xm.recommendation.model.CryptoCurrencyModel;
 import com.xm.recommendation.model.CryptoRateModel;
 import com.xm.recommendation.repository.CryptoCurrencyRepository;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +39,7 @@ public class DefaultCryptoService implements CryptoService {
     }
 
     @Override
-    public List<CryptoNormalizedRangeDto> getAllCryptosOrderedByNormalizedRange(int monthsPeriod) {
+    public List<CryptoNormalizedRangeDto> getAllCryptosOrderedByNormalizedRange(long monthsPeriod) {
         return StreamSupport.stream(cryptoCurrencyRepository.findAll().spliterator(), false)
                 .map(CryptoCurrencyModel::getCurrencyCode)
                 .map(currencyCode -> calculateNormalizedRange(currencyCode, monthsPeriod))
@@ -46,13 +48,58 @@ public class DefaultCryptoService implements CryptoService {
                 .collect(Collectors.toList());
     }
 
-    private CryptoNormalizedRangeDto calculateNormalizedRange(String currencyCode, int monthsPeriod) {
+    @Override
+    public CryptoRateModel findOldestRateByCurrencyCodeAndPeriod(String currencyCode, long monthsPeriod) {
+        LocalDateTime endDate = LocalDateTime.now();
+        LocalDateTime startDate = endDate.minusMonths(monthsPeriod);
 
+        return cryptoRateRepository.findOldestRateRecordByCurrencyCode(currencyCode, startDate, endDate)
+                .orElseThrow(() -> new CryptoRecordNotFoundException(
+                        String.format("oldest crypto record not found for currency: [%s], startDate: [%s], endDate: [%s]",
+                                currencyCode, startDate, endDate)));
+    }
+
+    @Override
+    public CryptoRateModel findNewestRateByCurrencyCodeAndPeriod(String currencyCode, long monthsPeriod) {
+        LocalDateTime endDate = LocalDateTime.now();
+        LocalDateTime startDate = endDate.minusMonths(monthsPeriod);
+
+        return cryptoRateRepository.findNewestRateRecordByCurrencyCode(currencyCode, startDate, endDate)
+                .orElseThrow(() -> new CryptoRecordNotFoundException(
+                        String.format("newest crypto record not found for currency: [%s], startDate: [%s], endDate: [%s]",
+                                currencyCode, startDate, endDate)));
+    }
+
+    @Override
+    public CryptoRateModel findMinRateByCurrencyCodeAndPeriod(String currencyCode, long monthsPeriod) {
+        LocalDateTime endDate = LocalDateTime.now();
+        LocalDateTime startDate = endDate.minusMonths(monthsPeriod);
+
+        return cryptoRateRepository.findRateRecordWithMinRateByCurrencyCode(currencyCode, startDate, endDate)
+                .orElseThrow(() -> new CryptoRecordNotFoundException(
+                        String.format("crypto record with min rate not found for currency: [%s], startDate: [%s], endDate: [%s]",
+                                currencyCode, startDate, endDate)));
+    }
+
+    @Override
+    public CryptoRateModel findMaxRateByCurrencyCodeAndPeriod(String currencyCode, long monthsPeriod) {
+        LocalDateTime endDate = LocalDateTime.now();
+        LocalDateTime startDate = endDate.minusMonths(monthsPeriod);
+
+        return cryptoRateRepository.findRateRecordWithMaxRateByCurrencyCode(currencyCode, startDate, endDate)
+                .orElseThrow(() -> new CryptoRecordNotFoundException(
+                        String.format("crypto record with max rate not found for currency: [%s], startDate: [%s], endDate: [%s]",
+                                currencyCode, startDate, endDate)));
+    }
+
+    private CryptoNormalizedRangeDto calculateNormalizedRange(String currencyCode, long monthsPeriod) {
+        LocalDateTime endDate = LocalDateTime.now();
+        LocalDateTime startDate = endDate.minusMonths(monthsPeriod);
         log.debug("Calculate normalizedRange for currency {} ", currencyCode);
-        BigDecimal maxPrice = cryptoRateRepository.getRateRecordWithMaxRateForCurrencyCode(currencyCode)
+        BigDecimal maxPrice = cryptoRateRepository.findRateRecordWithMaxRateByCurrencyCode(currencyCode, startDate, endDate)
                 .map(CryptoRateModel::getPrice)
                 .orElseThrow(() -> new CalculationNormalizedRangeException(String.format("Price not found for currency: [%s]", currencyCode)));
-        BigDecimal minPrice = cryptoRateRepository.getRateRecordWithMinRateForCurrencyCode(currencyCode)
+        BigDecimal minPrice = cryptoRateRepository.findRateRecordWithMinRateByCurrencyCode(currencyCode, startDate, endDate)
                 .map(CryptoRateModel::getPrice)
                 .orElseThrow(() -> new CalculationNormalizedRangeException(String.format("Price not found for currency: [%s]", currencyCode)));
         if (minPrice.equals(BigDecimal.ZERO)) {
