@@ -17,48 +17,55 @@ public interface CryptoService {
     Iterable<CryptoRateModel> getAllCurrencyRates();
 
     /**
-     * Get CryptoCurrencyModel
+     * Get supported CryptoCurrency by currencyCode
      *
-     * @param currencyCode input currencyCode
+     * @param currencyCode currency
      * @return Optional of {@link CryptoCurrencyModel CryptoCurrencyModel}
      */
     Optional<CryptoCurrencyModel> getCryptoCurrencyByCurrencyCode(String currencyCode);
 
-    List<CryptoNormalizedRangeDto> getAllCryptosOrderedByNormalizedRange(long monthsPeriod);
+    /**
+     * Return crypto records ordered by normalized range.
+     * Normalized range = (max-min)/min
+     *
+     * @param daysPeriod time period in days
+     * @return List of {@link CryptoNormalizedRangeDto CryptoNormalizedRangeDto}
+     */
+    List<CryptoNormalizedRangeDto> getAllCryptosOrderedByNormalizedRange(long daysPeriod);
 
     /**
      * Return oldest currency rate record
      *
      * @param currencyCode currency
-     * @param monthsPeriod time period in months
+     * @param daysPeriod time period in days
      * @return {@link CryptoRateModel oldest record}
      */
-    CryptoRateModel findOldestRateByCurrencyCodeAndPeriod(String currencyCode, long monthsPeriod);
+    CryptoRateModel findOldestRateByCurrencyCodeAndPeriod(String currencyCode, long daysPeriod);
 
     /**
      * Return newest currency rate record
      *
      * @param currencyCode currency
-     * @param monthsPeriod time period in months
+     * @param daysPeriod time period in days
      * @return {@link CryptoRateModel newest record}
      */
-    CryptoRateModel findNewestRateByCurrencyCodeAndPeriod(String currencyCode, long monthsPeriod);
+    CryptoRateModel findNewestRateByCurrencyCodeAndPeriod(String currencyCode, long daysPeriod);
 
     /**
      * Return currency rate record with min rate
      *
      * @param currencyCode currency
-     * @param monthsPeriod time period in months
+     * @param daysPeriod time period in days
      * @return {@link CryptoRateModel record with min rate}
      */
-    CryptoRateModel findMinRateByCurrencyCodeAndPeriod(String currencyCode, long monthsPeriod);
+    CryptoRateModel findMinRateByCurrencyCodeAndPeriod(String currencyCode, long daysPeriod);
 
     /**
      * Return currency rate record with max rate
      *
      * @param currencyCode currency
-     * @param monthsPeriod time period in months
+     * @param daysPeriod time period in days
      * @return {@link CryptoRateModel record with max rate}
      */
-    CryptoRateModel findMaxRateByCurrencyCodeAndPeriod(String currencyCode, long monthsPeriod);
+    CryptoRateModel findMaxRateByCurrencyCodeAndPeriod(String currencyCode, long daysPeriod);
 }

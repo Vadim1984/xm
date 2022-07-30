@@ -4,6 +4,9 @@ import com.xm.recommendation.dto.CryptoNormalizedRangeDto;
 import com.xm.recommendation.dto.CryptoRateDto;
 import com.xm.recommendation.dto.CryptoStatisticsDto;
 import com.xm.recommendation.facade.CryptoFacade;
+import com.xm.recommendation.validator.CryptoValidator;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,20 +21,33 @@ import java.util.List;
 public class CryptoController {
 
     private final CryptoFacade cryptoFacade;
+    private final CryptoValidator validator;
 
+    @Operation(summary = "Get all CryptoRateDto records", description = "Get all CryptoRate records")
     @GetMapping
     public List<CryptoRateDto> getAllCryptos() {
         return cryptoFacade.getAllCryptoRates();
     }
 
+    @Operation(summary = "Get normalizedRange for all crypto currencies",
+            description = "Get normalizedRange for all crypto currencies and time period in days." +
+                    "Normalized range = (maxRate-minRate)/minRate")
     @GetMapping("/normalized-rates")
-    public List<CryptoNormalizedRangeDto> getAllCryptosNormalizedRates(@RequestParam(value = "period", defaultValue = "12") long monthsPeriod) {
-        return cryptoFacade.getAllCryptosOrderedByNormalizedRange(monthsPeriod);
+    public List<CryptoNormalizedRangeDto> getAllCryptosNormalizedRates(
+            @Parameter(description = "time period in days till now")
+            @RequestParam(value = "period", defaultValue = "365") long daysPeriod) {
+        return cryptoFacade.getAllCryptosOrderedByNormalizedRange(daysPeriod);
     }
 
+    @Operation(summary = "Get statistics for an crypto currency",
+            description = "Get statistics for an crypto currency which include: oldestRecord, newestRecord, recordWithMaxRate, recordWithMinRate")
     @GetMapping("/statistic")
-    public CryptoStatisticsDto getStatisticsForCrypto(@RequestParam(value = "currencyCode") String currencyCode,
-                                                      @RequestParam(value = "period", defaultValue = "12") long monthsPeriod) {
-        return cryptoFacade.getStatisticsForCurrencyCodeAndPeriod(currencyCode, monthsPeriod);
+    public CryptoStatisticsDto getStatisticsForCrypto(
+            @Parameter(description = "crypto currency code")
+            @RequestParam(value = "currencyCode") String currencyCode,
+            @Parameter(description = "time period in days till now")
+            @RequestParam(value = "period", defaultValue = "365") long daysPeriod) {
+        validator.validateCurrencyCode(currencyCode);
+        return cryptoFacade.getStatisticsForCurrencyCodeAndPeriod(currencyCode, daysPeriod);
     }
 }

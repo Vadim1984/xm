@@ -8,14 +8,22 @@ import java.util.List;
 
 public interface CryptoFacade {
     List<CryptoRateDto> getAllCryptoRates();
-    List<CryptoNormalizedRangeDto> getAllCryptosOrderedByNormalizedRange(long monthsPeriod);
 
     /**
-     * Return oldest currency rate record
+     * Return crypto records ordered by normalized range
+     * @see com.xm.recommendation.service.CryptoService#getAllCryptosOrderedByNormalizedRange
+     *
+     * @param daysPeriod time period in days
+     * @return List of {@link CryptoNormalizedRangeDto CryptoNormalizedRangeDto}
+     */
+    List<CryptoNormalizedRangeDto> getAllCryptosOrderedByNormalizedRange(long daysPeriod);
+
+    /**
+     * Return statistics for currency and time period
      *
      * @param currencyCode currency
-     * @param monthsPeriod time period in months
+     * @param daysPeriod time period in days
      * @return {@link CryptoStatisticsDto CryptoStatisticsDto}
      */
-    CryptoStatisticsDto getStatisticsForCurrencyCodeAndPeriod(String currencyCode, long monthsPeriod);
+    CryptoStatisticsDto getStatisticsForCurrencyCodeAndPeriod(String currencyCode, long daysPeriod);
 }

@@ -27,16 +27,16 @@ public class DefaultCryptoFacade implements CryptoFacade {
     }
 
     @Override
-    public List<CryptoNormalizedRangeDto> getAllCryptosOrderedByNormalizedRange(long monthsPeriod) {
-        return cryptoService.getAllCryptosOrderedByNormalizedRange(monthsPeriod);
+    public List<CryptoNormalizedRangeDto> getAllCryptosOrderedByNormalizedRange(long daysPeriod) {
+        return cryptoService.getAllCryptosOrderedByNormalizedRange(daysPeriod);
     }
 
     @Override
-    public CryptoStatisticsDto getStatisticsForCurrencyCodeAndPeriod(String currencyCode, long monthsPeriod) {
-        CryptoRateModel oldestCryptoRecord = cryptoService.findOldestRateByCurrencyCodeAndPeriod(currencyCode, monthsPeriod);
-        CryptoRateModel newestCryptoRecord = cryptoService.findNewestRateByCurrencyCodeAndPeriod(currencyCode, monthsPeriod);
-        CryptoRateModel cryptoRecordWithMaxRate = cryptoService.findMaxRateByCurrencyCodeAndPeriod(currencyCode, monthsPeriod);
-        CryptoRateModel cryptoRecordWithMinRate = cryptoService.findMinRateByCurrencyCodeAndPeriod(currencyCode, monthsPeriod);
+    public CryptoStatisticsDto getStatisticsForCurrencyCodeAndPeriod(String currencyCode, long daysPeriod) {
+        CryptoRateModel oldestCryptoRecord = cryptoService.findOldestRateByCurrencyCodeAndPeriod(currencyCode, daysPeriod);
+        CryptoRateModel newestCryptoRecord = cryptoService.findNewestRateByCurrencyCodeAndPeriod(currencyCode, daysPeriod);
+        CryptoRateModel cryptoRecordWithMaxRate = cryptoService.findMaxRateByCurrencyCodeAndPeriod(currencyCode, daysPeriod);
+        CryptoRateModel cryptoRecordWithMinRate = cryptoService.findMinRateByCurrencyCodeAndPeriod(currencyCode, daysPeriod);
 
         return CryptoStatisticsDto.builder()
                 .newestRecord(converter.convert(newestCryptoRecord))
