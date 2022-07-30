@@ -1,6 +1,6 @@
 package com.xm.recommendation.service;
 
-import com.xm.recommendation.dto.CryptoCurrencyNormalizedRange;
+import com.xm.recommendation.dto.CryptoNormalizedRangeDto;
 import com.xm.recommendation.model.CryptoCurrencyModel;
 import com.xm.recommendation.model.CryptoRateModel;
 
@@ -24,5 +24,5 @@ public interface CryptoService {
      */
     Optional<CryptoCurrencyModel> getCryptoCurrencyByCurrencyCode(String currencyCode);
 
-    List<CryptoCurrencyNormalizedRange> getAllCryptosOrderedByNormalizedRange();
+    List<CryptoNormalizedRangeDto> getAllCryptosOrderedByNormalizedRange(int monthsPeriod);
 }

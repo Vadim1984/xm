@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @Data
 @Builder
 @EqualsAndHashCode
-public class CryptoCurrencyNormalizedRange {
+public class CryptoNormalizedRangeDto {
     private String cryptoCurrency;
     private BigDecimal normalizedRange;
 }

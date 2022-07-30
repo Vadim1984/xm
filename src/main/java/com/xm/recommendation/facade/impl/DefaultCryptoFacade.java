@@ -1,8 +1,8 @@
 package com.xm.recommendation.facade.impl;
 
 import com.xm.recommendation.converter.CryptoCurrencyRateModelToDtoConverter;
-import com.xm.recommendation.dto.CryptoCurrencyNormalizedRange;
-import com.xm.recommendation.dto.CryptoCurrencyRateDto;
+import com.xm.recommendation.dto.CryptoNormalizedRangeDto;
+import com.xm.recommendation.dto.CryptoRateDto;
 import com.xm.recommendation.facade.CryptoFacade;
 import com.xm.recommendation.service.CryptoService;
 import lombok.RequiredArgsConstructor;
@@ -18,15 +18,15 @@ public class DefaultCryptoFacade implements CryptoFacade {
     private final CryptoService cryptoService;
     private final CryptoCurrencyRateModelToDtoConverter cryptoCurrencyRateModelToDtoConverter;
 
-    public List<CryptoCurrencyRateDto> getAllCryptoRates() {
+    public List<CryptoRateDto> getAllCryptoRates() {
         return StreamSupport.stream(cryptoService.getAllCurrencyRates().spliterator(), false)
                 .map(cryptoCurrencyRateModelToDtoConverter::convert)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<CryptoCurrencyNormalizedRange> getAllCryptosOrderedByNormalizedRange() {
-        return cryptoService.getAllCryptosOrderedByNormalizedRange();
+    public List<CryptoNormalizedRangeDto> getAllCryptosOrderedByNormalizedRange(int monthsPeriod) {
+        return cryptoService.getAllCryptosOrderedByNormalizedRange(monthsPeriod);
     }
 
 }

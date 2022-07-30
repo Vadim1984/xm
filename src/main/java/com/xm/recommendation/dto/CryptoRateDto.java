@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 
 @Data
 @Builder
-public class CryptoCurrencyRateDto {
+public class CryptoRateDto {
     private Timestamp timeStamp;
     private String cryptoCurrency;
     private BigDecimal price;
