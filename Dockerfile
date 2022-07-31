@@ -2,7 +2,7 @@
 FROM maven as build
 WORKDIR /usr/src/app
 COPY . .
-RUN mvn clean install -DskipTests
+RUN mvn clean install
 
 FROM openjdk:11
 WORKDIR /usr/app
