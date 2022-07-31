@@ -4,10 +4,6 @@ services:
     networks:
       - my-network-name
     image: mysql
-    volumes:
-      - type: volume
-        source: mySqlData
-        target: /var/lib/mysql
     environment:
       MYSQL_ROOT_USER: root
       MYSQL_ROOT_PASSWORD: 1234
@@ -23,7 +19,7 @@ services:
       - my-network-name
     build: .
     restart: always
-    image: springbootdemo_web
+    image: recommendation_service
     ports:
       - 3333:8080
     environment:
@@ -35,5 +31,3 @@ services:
 networks:
   my-network-name:
     name: my-global-net
-volumes:
-  mySqlData:

@@ -37,7 +37,7 @@ public class CryptoController {
     @GetMapping("/statistic")
     public CryptoStatisticsDto getStatisticsForCrypto(
             @Parameter(description = "crypto currency code")
-            @RequestParam(value = "currencyCode") String currencyCode,
+            @RequestParam(value = "currency-code") String currencyCode,
             @Parameter(description = "time period in days till now")
             @RequestParam(value = "period", defaultValue = "365") long daysPeriod) {
         validator.validateCurrencyCode(currencyCode);
