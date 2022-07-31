@@ -10,13 +10,6 @@ import java.util.Optional;
 public interface CryptoService {
 
     /**
-     * Get all crypto-rates
-     *
-     * @return Iterable of {@link CryptoRateModel CryptoRateModel}
-     */
-    Iterable<CryptoRateModel> getAllCurrencyRates();
-
-    /**
      * Get supported CryptoCurrency by currencyCode
      *
      * @param currencyCode currency

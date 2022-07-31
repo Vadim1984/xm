@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
@@ -40,10 +41,17 @@ public class CsvFilesImportService implements DataImportService {
         try {
             ClassPathResource resource = new ClassPathResource("crypto_rates/" + fileName);
             Reader in = new BufferedReader(new InputStreamReader(resource.getInputStream()));
-            CSVParser records = CSVFormat.RFC4180.withFirstRecordAsHeader().parse(in);
+            CSVFormat csvFormat = CSVFormat.RFC4180.builder()
+                    .setHeader("timestamp", "symbol", "price")
+                    .setSkipHeaderRecord(true)
+                    .build();
+            CSVParser parser = csvFormat.parse(in);
 
-            List<CryptoRateModel> cryptoRates = StreamSupport.stream(records.spliterator(), false)
-                    .map(converter::convert)
+            List<CryptoRateModel> cryptoRates = Optional.ofNullable(parser.getRecords())
+                    .orElseGet(Collections::emptyList).stream()
+                    .map(this::readLine)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
                     .collect(Collectors.toList());
 
             return Optional.of(cryptoRates);
@@ -64,5 +72,13 @@ public class CsvFilesImportService implements DataImportService {
         log.debug("Read from csv files {} records", cryptoRecords.size());
         Iterable<CryptoRateModel> savedCryptoRecord = cryptoRateRepository.saveAll(cryptoRecords);
         log.debug("Insert into DB {} records", StreamSupport.stream(savedCryptoRecord.spliterator(), false).count());
+    }
+
+    private Optional<CryptoRateModel> readLine(CSVRecord csvRecord) {
+        try {
+            return Optional.ofNullable(converter.convert(csvRecord));
+        } catch (Exception ex) {
+            return Optional.empty();
+        }
     }
 }

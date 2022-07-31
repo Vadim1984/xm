@@ -12,6 +12,12 @@ import java.util.Optional;
 public class CryptoCurrencyRateModelToDtoConverter implements Converter<CryptoRateModel, CryptoRateDto> {
     @Override
     public CryptoRateDto convert(CryptoRateModel source) {
+        return Optional.ofNullable(source)
+                .map(this::convertInternal)
+                .orElse(CryptoRateDto.builder().build());
+    }
+
+    private CryptoRateDto convertInternal(CryptoRateModel source) {
         CryptoRateDto.CryptoRateDtoBuilder builder = CryptoRateDto.builder();
         Optional.ofNullable(source.getCryptoCurrency())
                 .map(CryptoCurrencyModel::getCurrencyCode)

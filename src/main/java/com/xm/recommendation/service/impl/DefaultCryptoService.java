@@ -29,11 +29,6 @@ public class DefaultCryptoService implements CryptoService {
     private final CryptoRateRepository cryptoRateRepository;
 
     @Override
-    public Iterable<CryptoRateModel> getAllCurrencyRates() {
-        return cryptoRateRepository.findAll();
-    }
-
-    @Override
     public Optional<CryptoCurrencyModel> getCryptoCurrencyByCurrencyCode(String currencyCode) {
         return Optional.ofNullable(cryptoCurrencyRepository.findByCurrencyCode(currencyCode));
     }
@@ -102,7 +97,7 @@ public class DefaultCryptoService implements CryptoService {
         BigDecimal minPrice = cryptoRateRepository.findRateRecordWithMinRateByCurrencyCode(currencyCode, startDate, endDate)
                 .map(CryptoRateModel::getPrice)
                 .orElseThrow(() -> new CalculationNormalizedRangeException(String.format("Min price not found for currency: [%s]", currencyCode)));
-        if (minPrice.equals(BigDecimal.ZERO)) {
+        if (BigDecimal.ZERO.compareTo(minPrice) == 0) {
             throw new CalculationNormalizedRangeException(
                     String.format("Min price iz zero for currency: [%s], not possible to calculate normalizedRange", currencyCode));
         }

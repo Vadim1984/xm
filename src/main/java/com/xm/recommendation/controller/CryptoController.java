@@ -1,7 +1,6 @@
 package com.xm.recommendation.controller;
 
 import com.xm.recommendation.dto.CryptoNormalizedRangeDto;
-import com.xm.recommendation.dto.CryptoRateDto;
 import com.xm.recommendation.dto.CryptoStatisticsDto;
 import com.xm.recommendation.facade.CryptoFacade;
 import com.xm.recommendation.validator.CryptoValidator;
@@ -22,12 +21,6 @@ public class CryptoController {
 
     private final CryptoFacade cryptoFacade;
     private final CryptoValidator validator;
-
-    @Operation(summary = "Get all CryptoRateDto records", description = "Get all CryptoRate records")
-    @GetMapping
-    public List<CryptoRateDto> getAllCryptos() {
-        return cryptoFacade.getAllCryptoRates();
-    }
 
     @Operation(summary = "Get normalizedRange for all crypto currencies",
             description = "Get normalizedRange for all crypto currencies and time period in days." +

@@ -3,7 +3,6 @@ package com.xm.recommendation.controller;
 import com.xm.recommendation.exception.CalculationNormalizedRangeException;
 import com.xm.recommendation.exception.CryptoRecordNotFoundException;
 import com.xm.recommendation.exception.CurrencyNotSupportedException;
-import com.xm.recommendation.exception.FileProcessingException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,8 +16,7 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(value = {
             CalculationNormalizedRangeException.class,
-            CurrencyNotSupportedException.class,
-            FileProcessingException.class})
+            CurrencyNotSupportedException.class})
     public ResponseEntity<Object> handleBadRequest(Exception ex, WebRequest request) {
         Map<String, Object> body = new HashMap<>();
         body.put("message", ex.getMessage());

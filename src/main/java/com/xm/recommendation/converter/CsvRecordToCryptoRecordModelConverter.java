@@ -1,6 +1,6 @@
 package com.xm.recommendation.converter;
 
-import com.xm.recommendation.exception.FileProcessingException;
+import com.xm.recommendation.exception.CsvRecordParsingException;
 import com.xm.recommendation.model.CryptoRateModel;
 import com.xm.recommendation.repository.CryptoCurrencyRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.TimeZone;
 
 @RequiredArgsConstructor
@@ -25,6 +26,12 @@ public class CsvRecordToCryptoRecordModelConverter implements Converter<CSVRecor
 
     @Override
     public CryptoRateModel convert(CSVRecord source) {
+        return Optional.ofNullable(source)
+                .map(this::convertInternal)
+                .orElseThrow(() -> new CsvRecordParsingException("Csv file record cannot be null"));
+    }
+
+    private CryptoRateModel convertInternal(CSVRecord source) {
         try {
             String timestamp = source.get(TIMESTAMP_FILED);
             String symbol = source.get(SYMBOL_FIELD);
@@ -38,7 +45,7 @@ public class CsvRecordToCryptoRecordModelConverter implements Converter<CSVRecor
                     .price(new BigDecimal(price))
                     .build();
         } catch (IllegalArgumentException e) {
-            throw new FileProcessingException(e.getMessage());
+            throw new CsvRecordParsingException(e.getMessage());
         }
     }
 }
