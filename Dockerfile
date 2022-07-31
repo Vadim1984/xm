@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 COPY . .
 RUN mvn clean install -DskipTests
 
-FROM adoptopenjdk/openjdk11:latest
+FROM openjdk:11
 WORKDIR /usr/app
 COPY --from=build /usr/src/app/target/*.jar ./springbootdemo-0.0.1-SNAPSHOT.jar
 EXPOSE 8080
